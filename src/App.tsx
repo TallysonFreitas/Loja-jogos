@@ -1,12 +1,15 @@
-import logo from './logo.svg'
-import './App.css'
 import { GlobalCss } from './styles'
+import Header from './components/Header'
+import Banner from './components/Banner'
 
 function App() {
   return (
     <>
       <GlobalCss />
-      <div>ola mundo</div>
+      <div className="container">
+        <Header />
+      </div>
+      <Banner />
     </>
   )
 }
