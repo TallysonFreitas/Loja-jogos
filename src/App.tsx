@@ -1,6 +1,6 @@
 import { GlobalCss } from './styles'
 import Header from './components/Header'
-import { BrowserRouter, Route, Routes } from 'react-router-dom'
+import { BrowserRouter } from 'react-router-dom'
 import Rotas from './routes'
 import Footer from './components/Footer'
 
