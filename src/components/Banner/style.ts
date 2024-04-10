@@ -10,6 +10,7 @@ export const Imagem = styled.div`
   font-weight: bold;
   padding-top: 340px;
   position: relative;
+  background-position: center;
 
   .container {
     display: flex;
