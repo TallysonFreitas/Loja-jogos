@@ -1,33 +1,55 @@
 import { Banner, Infos } from './style'
-import bannerImg from '../../assets/images/fundo_hogwarts.png'
 import Tag from '../Tag'
 import Button from '../Button'
+import { Game } from '../../pages/Home'
+import { formataPreco } from '../ProductsList'
+import { useDispatch } from 'react-redux'
+import { add, openCart } from '../../store/reducers/cart'
 
-const Hero = () => (
-  <Banner style={{ backgroundImage: `url(${bannerImg})` }}>
-    <div className="container">
-      <div>
-        <Tag>RPG</Tag>
-        <Tag>PS5</Tag>
-      </div>
-      <Infos>
-        <h2>Hogwarts Legacy</h2>
+type Props = {
+  game: Game
+}
+
+const Hero = ({ game }: Props) => {
+  const dispatch = useDispatch()
+  const addToCart = () => {
+    dispatch(add(game))
+    dispatch(openCart())
+  }
+
+  return (
+    <Banner style={{ backgroundImage: `url(${game.media.cover})` }}>
+      <div className="container">
         <div>
-          <p>
-            <span>De R$250,00</span>
-            Por R$ 190,00
-          </p>
-          <Button
-            title="clique aqui para adicionar ao carrinho"
-            variant="primary"
-            type="button"
-          >
-            Adicionar ao carrinho
-          </Button>
+          <Tag>{game.details.category}</Tag>
+          <Tag>{game.details.system}</Tag>
         </div>
-      </Infos>
-    </div>
-  </Banner>
-)
+        <Infos>
+          <h2>{game.name}</h2>
+          <div>
+            <p>
+              {game.prices.discount && (
+                <span>De {formataPreco(game.prices.old)}</span>
+              )}
+              {game.prices.current && (
+                <>Por {formataPreco(game.prices.current)}</>
+              )}
+            </p>
 
+            {game.prices.current && (
+              <Button
+                title="clique aqui para adicionar ao carrinho"
+                variant="primary"
+                type="button"
+                onClick={addToCart}
+              >
+                Adicionar ao carrinho
+              </Button>
+            )}
+          </div>
+        </Infos>
+      </div>
+    </Banner>
+  )
+}
 export default Hero

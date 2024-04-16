@@ -1,49 +1,37 @@
 import { useParams } from 'react-router-dom'
 import Hero from '../../components/Hero'
 import Section from '../../components/Section'
-import ResidentEvil from '../../assets/images/resident.png'
 import Gallery from '../../components/Gallery'
+import { useGetGameQuery } from '../../services/api'
 
 const Product = () => {
   const { id } = useParams()
+  const { data: game } = useGetGameQuery(id!)
 
+  if (!game) {
+    return <h3>carregando...</h3>
+  }
   return (
     <>
-      <Hero />
+      <Hero game={game} />
       <Section title="Sobre o jogo" background="black">
-        <p>
-          Lorem ipsum dolor sit amet consectetur adipisicing elit. Odit
-          doloremque, voluptatibus eveniet minima ad, quos tenetur ab natus
-          illum, hic deleniti itaque soluta aliquid accusantium perspiciatis.
-          Incidunt distinctio eaque odio eos iure voluptates maiores earum,
-          laborum ducimus. Porro non expedita necessitatibus exercitationem fuga
-          asperiores cum maiores corrupti atque sint dolores, ad, quidem
-          voluptatem debitis? Earum consequuntur natus nemo itaque dolorem?
-          Eligendi laborum sint voluptatem expedita quibusdam quasi optio amet
-          magnam ratione illo? Exercitationem reiciendis pariatur cupiditate
-          omnis, unde obcaecati culpa? Ex recusandae, sunt illum alias
-          voluptatibus corrupti aliquid! Ipsa eaque unde repellendus suscipit
-          nam odit quis neque recusandae magni necessitatibus?
-        </p>
+        <p>{game.description}</p>
       </Section>
       <Section title="Mais detalhes" background="gray">
         <p>
-          Lorem ipsum dolor sit amet consectetur adipisicing elit. Odit
-          doloremque, voluptatibus eveniet minima ad, quos tenetur ab natus
-          illum, hic deleniti itaque soluta aliquid accusantium perspiciatis.
-          Incidunt distinctio eaque odio eos iure voluptates maiores earum,
-          laborum ducimus. Porro non expedita necessitatibus exercitationem fuga
-          asperiores cum maiores corrupti atque sint dolores, ad, quidem
-          voluptatem debitis? Earum consequuntur natus nemo itaque dolorem?
-          Eligendi laborum sint voluptatem expedita quibusdam quasi optio amet
-          magnam ratione illo? Exercitationem reiciendis pariatur cupiditate
-          omnis, unde obcaecati culpa? Ex recusandae, sunt illum alias
-          voluptatibus corrupti aliquid! Ipsa eaque unde repellendus suscipit
-          nam odit quis neque recusandae magni necessitatibus?
+          <b>Plataforma:</b> {game.details.system} <br />
+          <b>Desenvolvedor:</b> {game.details.developer} <br />
+          <b>Editora:</b> {game.details.publisher} <br />
+          <b>Idiomas:</b> O jogo oferece suporte a diversos idiomas, incluindo{' '}
+          {game.details.languages.join(', ')}
         </p>
       </Section>
 
-      <Gallery defaultCover={ResidentEvil} name="jogo teste" />
+      <Gallery
+        defaultCover={game.media.cover}
+        name={game.name}
+        items={game.media.gallery}
+      />
     </>
   )
 }

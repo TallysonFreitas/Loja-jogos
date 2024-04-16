@@ -1,103 +1,50 @@
 import ProductsList from '../../components/ProductsList'
-import { Game } from '../../models/Game'
-import ResidentEvil from '../../assets/images/resident.png'
-import diablo from '../../assets/images/diablo.png'
-import zelda from '../../assets/images/zelda.png'
-import starWars from '../../assets/images/star_wars.png'
+import {
+  useGetActionGamesQuery,
+  useGetFightGamesQuery,
+  useGetRpgGamesQuery,
+  useGetSimulationGamesQuery,
+  useGetSportGamesQuery
+} from '../../services/api'
 
-const promocoes: Game[] = [
-  {
-    id: 1,
-    category: 'Acao',
-    description:
-      'Diablo IV é um RPG de acao em desenvolvimento pela Blizzard Entertainment',
-    title: 'Resident Evil 4',
-    system: 'Windows',
-    infos: ['10%', 'R$ 250,00'],
-    image: ResidentEvil
-  },
-  {
-    id: 2,
-    category: 'RPG',
-    description:
-      'Diablo IV é um RPG de acao em desenvolvimento pela Blizzard Entertainment',
-    title: 'Diablo',
-    system: 'PS5',
-    infos: ['20%', 'R$ 290,00'],
-    image: diablo
-  },
-  {
-    id: 3,
-    category: 'Acao',
-    description:
-      'Diablo IV é um RPG de acao em desenvolvimento pela Blizzard Entertainment',
-    title: 'Zelda',
-    system: 'Windows',
-    infos: ['10%', 'R$ 250,00'],
-    image: zelda
-  },
-  {
-    id: 4,
-    category: 'Acao',
-    description:
-      'Diablo IV é um RPG de acao em desenvolvimento pela Blizzard Entertainment',
-    title: 'Star Wars',
-    system: 'Windows',
-    infos: ['10%', 'R$ 250,00'],
-    image: starWars
+const Categories = () => {
+  const { data: gamesAcao } = useGetActionGamesQuery()
+  const { data: gamesEsportes } = useGetSportGamesQuery()
+  const { data: gamesSimulacao } = useGetSimulationGamesQuery()
+  const { data: gamesLuta } = useGetFightGamesQuery()
+  const { data: gamesRPG } = useGetRpgGamesQuery()
+
+  if (gamesAcao && gamesEsportes && gamesSimulacao && gamesLuta && gamesRPG) {
+    return (
+      <>
+        <ProductsList title="RPG" background="black" game={gamesRPG} id="rpg" />
+        <ProductsList
+          title="Acao"
+          background="gray"
+          game={gamesAcao}
+          id="action"
+        />
+        <ProductsList
+          title="Esportes"
+          background="black"
+          game={gamesEsportes}
+          id="sports"
+        />
+        <ProductsList
+          title="Luta"
+          background="gray"
+          game={gamesLuta}
+          id="fight"
+        />
+        <ProductsList
+          title="Simulacao"
+          background="black"
+          game={gamesSimulacao}
+          id="simulation"
+        />
+      </>
+    )
   }
-]
-
-const emBreve: Game[] = [
-  {
-    id: 5,
-    category: 'Acao',
-    description:
-      'Diablo IV é um RPG de acao em desenvolvimento pela Blizzard Entertainment',
-    title: 'Resident Evil 4',
-    system: 'Windows',
-    infos: ['10%', 'R$ 250,00'],
-    image: ResidentEvil
-  },
-  {
-    id: 6,
-    category: 'RPG',
-    description:
-      'Diablo IV é um RPG de acao em desenvolvimento pela Blizzard Entertainment',
-    title: 'Diablo',
-    system: 'PS5',
-    infos: ['20%', 'R$ 290,00'],
-    image: diablo
-  },
-  {
-    id: 7,
-    category: 'Acao',
-    description:
-      'Diablo IV é um RPG de acao em desenvolvimento pela Blizzard Entertainment',
-    title: 'Zelda',
-    system: 'Windows',
-    infos: ['10%', 'R$ 250,00'],
-    image: zelda
-  },
-  {
-    id: 8,
-    category: 'Acao',
-    description:
-      'Diablo IV é um RPG de acao em desenvolvimento pela Blizzard Entertainment',
-    title: 'Star Wars',
-    system: 'Windows',
-    infos: ['10%', 'R$ 250,00'],
-    image: starWars
-  }
-]
-
-const Categories = () => (
-  <>
-    <ProductsList title="RPG" background="gray" game={promocoes} />
-    <ProductsList title="Acao" background="black" game={emBreve} />
-    <ProductsList title="Aventura" background="gray" game={promocoes} />
-    <ProductsList title="FPS" background="black" game={emBreve} />
-  </>
-)
-
+  return <h3>carregando</h3>
+}
 export default Categories

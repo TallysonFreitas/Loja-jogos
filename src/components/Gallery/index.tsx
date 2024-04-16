@@ -1,43 +1,24 @@
-import Hogwarts from '../../assets/images/fundo_hogarts.png'
 import { Action, Item, Items, Modal, ModalContent } from './style'
 import Zoom from '../../assets/images/zoom.png'
 import Play from '../../assets/images/play.png'
 import Fechar from '../../assets/images/fechar.png'
-import SpiderMan from '../../assets/images/banner-homem-aranha.png'
 import { useState } from 'react'
 import Section from '../Section'
+import { GalleryItem } from '../../pages/Home'
 
 // Interfaces
-interface GalleryItem {
-  type: 'image' | 'video'
-  url: string
-}
+
 interface Props {
   defaultCover: string
   name: string
+  items: GalleryItem[]
 }
 interface ModalState extends GalleryItem {
   isVisible: boolean
 }
 
-// Mock
-const mock: GalleryItem[] = [
-  {
-    type: 'image',
-    url: SpiderMan
-  },
-  {
-    type: 'image',
-    url: Hogwarts
-  },
-  {
-    type: 'video',
-    url: 'https://www.youtube.com/embed/uHGShqcAHlQ?si=suxbcQskHK3iHATF'
-  }
-]
-
 // Componente Galeria
-const Gallery = ({ defaultCover, name }: Props) => {
+const Gallery = ({ defaultCover, name, items }: Props) => {
   const [modal, setModal] = useState<ModalState>({
     isVisible: false,
     type: 'image',
@@ -66,7 +47,7 @@ const Gallery = ({ defaultCover, name }: Props) => {
     <>
       <Section title="Galeria" background="black">
         <Items>
-          {mock.map((each, index) => (
+          {items.map((each, index) => (
             <Item
               key={each.url}
               onClick={() => {
@@ -93,13 +74,12 @@ const Gallery = ({ defaultCover, name }: Props) => {
             <h4>{name}</h4>
             <img src={Fechar} alt="icone de fechar" onClick={closeModal} />
           </header>
-          <div>
-            {modal.type === 'image' ? (
-              <img src={modal.url} alt="" />
-            ) : (
-              <iframe frameBorder={0} src={modal.url} />
-            )}
-          </div>
+
+          {modal.type === 'image' ? (
+            <img src={modal.url} alt="" />
+          ) : (
+            <iframe frameBorder={0} src={modal.url} />
+          )}
         </ModalContent>
         <div className="overlay" onClick={closeModal}></div>
       </Modal>

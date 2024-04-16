@@ -1,103 +1,61 @@
 import Banner from '../../components/Banner'
 import ProductsList from '../../components/ProductsList'
-import { Game } from '../../models/Game'
-import ResidentEvil from '../../assets/images/resident.png'
-import diablo from '../../assets/images/diablo.png'
-import zelda from '../../assets/images/zelda.png'
-import starWars from '../../assets/images/star_wars.png'
+import { useEffect, useState } from 'react'
+import { useGetOnSaleQuery, useGetOnSoonQuery } from '../../services/api'
 
-const promocoes: Game[] = [
-  {
-    id: 1,
-    category: 'Acao',
-    description:
-      'Diablo IV é um RPG de acao em desenvolvimento pela Blizzard Entertainment',
-    title: 'Resident Evil 4',
-    system: 'Windows',
-    infos: ['10%', 'R$ 250,00'],
-    image: ResidentEvil
-  },
-  {
-    id: 2,
-    category: 'RPG',
-    description:
-      'Diablo IV é um RPG de acao em desenvolvimento pela Blizzard Entertainment',
-    title: 'Diablo',
-    system: 'PS5',
-    infos: ['20%', 'R$ 290,00'],
-    image: diablo
-  },
-  {
-    id: 3,
-    category: 'Acao',
-    description:
-      'Diablo IV é um RPG de acao em desenvolvimento pela Blizzard Entertainment',
-    title: 'Zelda',
-    system: 'Windows',
-    infos: ['10%', 'R$ 250,00'],
-    image: zelda
-  },
-  {
-    id: 4,
-    category: 'Acao',
-    description:
-      'Diablo IV é um RPG de acao em desenvolvimento pela Blizzard Entertainment',
-    title: 'Star Wars',
-    system: 'Windows',
-    infos: ['10%', 'R$ 250,00'],
-    image: starWars
+export interface GalleryItem {
+  type: 'image' | 'video'
+  url: string
+}
+
+export type Game = {
+  id: number
+  name: string
+  description: string
+  release_date?: string
+  prices: {
+    discount?: number
+    old?: number
+    current?: number
   }
-]
-
-const emBreve: Game[] = [
-  {
-    id: 5,
-    category: 'Acao',
-    description:
-      'Diablo IV é um RPG de acao em desenvolvimento pela Blizzard Entertainment',
-    title: 'Resident Evil 4',
-    system: 'Windows',
-    infos: ['10%', 'R$ 250,00'],
-    image: ResidentEvil
-  },
-  {
-    id: 6,
-    category: 'RPG',
-    description:
-      'Diablo IV é um RPG de acao em desenvolvimento pela Blizzard Entertainment',
-    title: 'Diablo',
-    system: 'PS5',
-    infos: ['20%', 'R$ 290,00'],
-    image: diablo
-  },
-  {
-    id: 7,
-    category: 'Acao',
-    description:
-      'Diablo IV é um RPG de acao em desenvolvimento pela Blizzard Entertainment',
-    title: 'Zelda',
-    system: 'Windows',
-    infos: ['10%', 'R$ 250,00'],
-    image: zelda
-  },
-  {
-    id: 8,
-    category: 'Acao',
-    description:
-      'Diablo IV é um RPG de acao em desenvolvimento pela Blizzard Entertainment',
-    title: 'Star Wars',
-    system: 'Windows',
-    infos: ['10%', 'R$ 250,00'],
-    image: starWars
+  details: {
+    category: string
+    system: string
+    developer: string
+    publisher: string
+    languages: string[]
   }
-]
+  media: {
+    thumbnail: string
+    cover: string
+    gallery: GalleryItem[]
+  }
+}
 
-const Home = () => (
-  <>
-    <Banner />
-    <ProductsList title="Promocoes" background="gray" game={promocoes} />
-    <ProductsList title="Em breve" background="black" game={emBreve} />
-  </>
-)
+const Home = () => {
+  const { data: promocoes } = useGetOnSaleQuery()
+  const { data: emBreve } = useGetOnSoonQuery()
+
+  if (promocoes && emBreve) {
+    return (
+      <>
+        <Banner />
+        <ProductsList
+          title="Promocoes"
+          background="gray"
+          game={promocoes}
+          id={'on-sale'}
+        />
+        <ProductsList
+          title="Em breve"
+          background="black"
+          game={emBreve}
+          id={'coming-soon'}
+        />
+      </>
+    )
+  }
+  return <h3>carregando...</h3>
+}
 
 export default Home
