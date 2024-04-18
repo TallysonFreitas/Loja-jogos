@@ -2,7 +2,6 @@ import { useState } from 'react'
 
 import * as S from './style'
 
-import { GalleryItem } from '../../pages/Home'
 import Zoom from '../../assets/images/zoom.png'
 import Play from '../../assets/images/play.png'
 import CloseIcon from '../../assets/images/fechar.png'

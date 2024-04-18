@@ -10,12 +10,6 @@ export const Links = styled.ul`
     display: block;
     text-align: center;
   }
-
-  a {
-    color: ${colors.white};
-    text-decoration: none;
-    font-weight: bold;
-  }
 `
 
 export const NavMobile = styled.nav`
@@ -31,6 +25,17 @@ export const HeaderBar = styled.header`
   padding: 24px;
   border-radius: 16px;
   margin-bottom: 80px;
+
+  a,
+  span {
+    color: ${colors.white};
+    text-decoration: none;
+    font-weight: bold;
+  }
+
+  h1 {
+    line-height: 0;
+  }
 `
 
 export const LinkItem = styled.li`
@@ -46,7 +51,7 @@ export const LinkItem = styled.li`
   }
 `
 
-export const CartButton = styled.a`
+export const CartButton = styled.span`
   display: flex;
   cursor: pointer;
 
@@ -84,8 +89,11 @@ export const HeaderRow = styled.div`
   > div {
     display: flex;
     align-items: center;
-    flex: 1;
-    justify-content: space-between;
+
+    @media (max-width: ${breakpoints.tablet}) {
+      flex: 1;
+      justify-content: space-between;
+    }
 
     ${Links} {
       @media (max-width: ${breakpoints.tablet}) {
