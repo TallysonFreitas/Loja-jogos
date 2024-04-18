@@ -1,6 +1,6 @@
 import Banner from '../../components/Banner'
 import ProductsList from '../../components/ProductsList'
-import { useEffect, useState } from 'react'
+
 import { useGetOnSaleQuery, useGetOnSoonQuery } from '../../services/api'
 
 export interface GalleryItem {

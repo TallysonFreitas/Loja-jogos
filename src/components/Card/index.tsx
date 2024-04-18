@@ -1,4 +1,4 @@
-import { Container } from './style'
+import * as S from './style'
 
 type Props = {
   title: string
@@ -6,10 +6,10 @@ type Props = {
 }
 
 const Card = ({ children, title }: Props) => (
-  <Container>
+  <S.Container>
     <h2>{title}</h2>
     {children}
-  </Container>
+  </S.Container>
 )
 
 export default Card

@@ -1,17 +1,12 @@
 import Button from '../Button'
-import {
-  CartContainer,
-  CartItem,
-  Overlay,
-  Quantity,
-  SideBar,
-  Textos
-} from './style'
 import Tag from '../Tag'
+
 import { useDispatch, useSelector } from 'react-redux'
 import { RootReducer } from '../../store'
 import { closeCart, remove } from '../../store/reducers/cart'
-import { formataPreco } from '../ProductsList'
+import { parseToBrl } from '../../utils'
+
+import * as S from './style'
 
 const Cart = () => {
   const { isOpen, items } = useSelector((state: RootReducer) => state.cart)
@@ -26,18 +21,18 @@ const Cart = () => {
     dispatch(remove(id))
   }
   return (
-    <CartContainer className={isOpen === true ? 'visivel' : ''}>
-      <Overlay onClick={closeCarrinho} />
-      <SideBar>
+    <S.CartContainer className={isOpen === true ? 'visivel' : ''}>
+      <S.Overlay onClick={closeCarrinho} />
+      <S.SideBar>
         <ul>
           {items.map((each) => (
-            <CartItem key={each.id}>
+            <S.CartItem key={each.id}>
               <img src={each.media.thumbnail} alt={each.name} />
               <div>
                 <h3>{each.name}</h3>
                 <Tag>{each.details.category}</Tag>
                 <Tag>{each.details.system}</Tag>
-                <span>{formataPreco(each.prices.current)}</span>
+                <span>{parseToBrl(each.prices.current)}</span>
               </div>
               <button
                 type="button"
@@ -45,19 +40,19 @@ const Cart = () => {
                   removeItem(each.id)
                 }}
               />
-            </CartItem>
+            </S.CartItem>
           ))}
         </ul>
-        <Quantity>{items.length} jogo(s) no carrinho</Quantity>
-        <Textos>
-          Total de {formataPreco(getTotalPrice())}
+        <S.Quantity>{items.length} jogo(s) no carrinho</S.Quantity>
+        <S.Textos>
+          Total de {parseToBrl(getTotalPrice())}
           <span>em ate 6x sem juros</span>
-        </Textos>
+        </S.Textos>
         <Button type="button" title="clique aqui para continuar com a compra">
           Continuar com a compra
         </Button>
-      </SideBar>
-    </CartContainer>
+      </S.SideBar>
+    </S.CartContainer>
   )
 }
 
