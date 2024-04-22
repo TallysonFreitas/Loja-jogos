@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react'
 
 import Button from '../../components/Button'
 import Card from '../../components/Card'
+import InputMask from 'react-input-mask'
 
 import { useFormik } from 'formik'
 import * as Yup from 'yup'
@@ -15,7 +16,6 @@ import * as S from './style'
 import barCode from '../../assets/images/boleto.png'
 import creditCard from '../../assets/images/cartao.png'
 import { getTotalPrice, parseToBrl } from '../../utils'
-import InputMask from 'react-input-mask'
 import { clearCart } from '../../store/reducers/cart'
 
 type Installment = {
@@ -25,14 +25,15 @@ type Installment = {
 }
 
 const Checkout = () => {
+  const dispatch = useDispatch()
+
   const [payWithCard, setPayWithCard] = useState<boolean>(false)
   const [purchase, { data, isSuccess, isLoading }] = usePurchaseMutation()
   const [installments, setInstallments] = useState<Installment[]>([])
 
-  const dispatch = useDispatch()
   const { items } = useSelector((state: RootReducer) => state.cart)
 
-  const totalPrice = getTotalPrice(items)
+  const totalPrice: number = getTotalPrice(items)
 
   const mudaFormaPagamento = (e: boolean) => {
     setPayWithCard(e)
@@ -130,6 +131,7 @@ const Checkout = () => {
     }
   })
 
+  // muda valor de parcelas
   useEffect(() => {
     const calculaInstallments = () => {
       const installmentsArray: Installment[] = []
@@ -148,12 +150,14 @@ const Checkout = () => {
     }
   }, [totalPrice])
 
+  // limpa o cart quando o formulario é enviado corretamente
   useEffect(() => {
     if (isSuccess) {
       dispatch(clearCart())
     }
   }, [dispatch, isSuccess])
 
+  // checa se a chave do input esta no campo invalido e tocado do form
   const checkInputHasError = (fieldName: string) => {
     const isTouched = fieldName in form.touched
     const isInvalid = fieldName in form.errors
@@ -163,6 +167,7 @@ const Checkout = () => {
     return hasError
   }
 
+  // caso nao haja mais itens no carrinho e o pagamento tenha sido feito corretamente
   if (items.length === 0 && !isSuccess) {
     return <Navigate to="/" />
   }
